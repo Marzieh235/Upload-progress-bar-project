@@ -11,7 +11,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <form action="/upload.php" method="POST" enctype="multipart/form-data">
+                <form action="/upload.php" method="POST" enctype="multipart/form-data" id="upload">
                     <div class="form-group">
                         <label for="fileupload">File : </label>
                         <input type="file" id="fileupload" name="file" class="form-control-file">
@@ -21,6 +21,31 @@
             </div>
         </div>
     </div>
-    <script></script>
+
+    <script>
+        const form = document.querySelector('#upload');
+       
+        form.addEventListener('submit' , function(event) {
+            event.preventDefault();
+      
+            let file = this.querySelector(`#fileupload`).files[0]
+            if(file) {
+                let formdata = new FormData();
+                formdata.append('file' ,file);
+
+                let ajax = new XMLHttpRequest();
+                ajax.addEventListener('load' , completeHandler)
+
+                ajax.open('POST' , '/upload.php');
+                ajax.send(formdata)
+            }
+        })
+
+
+        function completeHandler() {
+            console.log('complete')
+        }
+
+    </script>
 </body>
 </html>
