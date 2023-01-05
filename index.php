@@ -27,6 +27,7 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
     <script>
         const form = document.querySelector('#upload');
         const progress = document.getElementById('progress');
@@ -42,12 +43,13 @@
                 let formdata = new FormData();
                 formdata.append('file' ,file);
 
-                let ajax = new XMLHttpRequest();
-                ajax.upload.addEventListener('progress' , progressHandler)
-                ajax.addEventListener('load' , completeHandler)
-
-                ajax.open('POST' , '/upload.php');
-                ajax.send(formdata)
+              axios.post('./upload.php' , formdata , {
+                onUploadProgress : progressHandler
+              })
+              .then(response => {
+                console.log(response)
+              }) 
+              .catch(error => console.log(error))
             }
         })
 
@@ -57,10 +59,7 @@
             progressBar.innerHTML = `${percent}%`
         }
 
-        function completeHandler() {
-            console.log('complete')
-        }
-
+       
     </script>
 </body>
 </html>
